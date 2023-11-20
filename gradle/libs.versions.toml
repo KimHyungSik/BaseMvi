@@ -16,6 +16,7 @@ junit = "4.13.2"
 android-junit = "1.1.5"
 #https://mvnrepository.com/artifact/androidx.test.espresso/espresso-core
 espresso-core = "3.5.1"
+org-jetbrains-kotlin-jvm = "1.8.10"
 
 [libraries]
 #andorid
@@ -39,3 +40,4 @@ test-android-espresso = { group = "androidx.test.espresso", name = "espresso-cor
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-material3"]
 
 [plugins]
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
