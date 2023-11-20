@@ -15,3 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "MviSkeletonApp"
 include(":app")
+include(":domain")
+include(":data")
+include(":feature")
+include(":feature:main")
