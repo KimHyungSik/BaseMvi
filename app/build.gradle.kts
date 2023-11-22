@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -10,7 +10,6 @@ android {
     defaultConfig {
         applicationId = "com.example.mviskeletonapp"
         minSdk = 26
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
