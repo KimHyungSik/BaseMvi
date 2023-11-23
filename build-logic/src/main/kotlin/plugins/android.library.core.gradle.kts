@@ -1,0 +1,9 @@
+import config.configureAndroidCompose
+import config.configureAndroidLibrary
+import config.configureAndroidTest
+import config.configureKotlinTest
+
+configureAndroidLibrary()
+configureAndroidCompose()
+configureAndroidTest()
+configureKotlinTest()

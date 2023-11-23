@@ -14,6 +14,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "MviSkeletonApp"
+
+includeBuild("build-logic")
+
 include(":app")
 include(":domain")
 include(":feature")
