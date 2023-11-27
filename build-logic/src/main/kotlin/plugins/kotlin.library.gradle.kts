@@ -1,0 +1,3 @@
+import config.configureHiltKotlin
+
+configureHiltKotlin()

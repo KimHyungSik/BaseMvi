@@ -1,9 +1,11 @@
 import config.configureAndroidCompose
 import config.configureAndroidLibrary
 import config.configureAndroidTest
+import config.configureHiltAndroid
 import config.configureKotlinTest
 
 configureAndroidLibrary()
 configureAndroidCompose()
 configureAndroidTest()
 configureKotlinTest()
+configureHiltAndroid()
