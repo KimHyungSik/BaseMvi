@@ -1,5 +1,4 @@
 *.iml
-*.build
 .gradle
 /local.properties
 /.idea/caches
@@ -14,3 +13,18 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Generated files
+bin/
+gen/
+out/
+
+# Android Studio
+/*/build/
+/*/local.properties
+/*/out
+/*/*/build
+/*/*/production
+*.ipr
+*~
+*.swp
