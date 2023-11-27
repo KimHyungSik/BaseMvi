@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mviskeletonapp"
+    namespace = "com.example.mviskeletonapp.feature.main"
 }

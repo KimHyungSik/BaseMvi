@@ -1,9 +1,7 @@
-plugins {
-    id("java-library")
-    alias(libs.plugins.kotlin.jvm)
+plugins{
+    id("android.library.core")
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+android{
+    namespace = "com.example.mviskeletonapp.data"
 }
