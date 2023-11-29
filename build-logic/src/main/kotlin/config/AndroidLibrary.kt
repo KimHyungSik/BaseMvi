@@ -10,6 +10,7 @@ internal fun Project.configureAndroidLibrary() {
     with(pluginManager) {
         apply("com.android.library")
         apply("kotlin-android")
+        apply("kotlinx-serialization")
     }
 
     configureKotlinAndroid()
@@ -17,7 +18,7 @@ internal fun Project.configureAndroidLibrary() {
     dependencies {
         add("implementation" , libs.findLibrary("okhttp").get())
         add("implementation", libs.findLibrary("retrofit").get())
-        add("implementation", libs.findLibrary("retrofit.converter.gson").get())
+        add("implementation", libs.findLibrary("retrofit.kotlin.serialization.converter").get())
     }
 
 }
