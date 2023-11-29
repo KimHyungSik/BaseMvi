@@ -1,5 +1,5 @@
 plugins {
-    id("android.library.core")
+    id("android.library.feature")
 }
 
 android {
