@@ -18,10 +18,10 @@ internal object ExampleModule {
 
     @Provides
     @Singleton
-    fun provider(
+    fun providerRetrofit(
         okHttpClient: OkHttpClient,
     ): Retrofit = Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://reqres.in/api/users/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient).build()
 }

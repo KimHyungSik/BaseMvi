@@ -73,7 +73,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
-compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-material3", "compose-navigation"]
+compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-material3", "compose-navigation", "hilt-navigation-compose"]
 test = ["test-junit", "test-android-junit", "test-android-espresso"]
 
 [plugins]
