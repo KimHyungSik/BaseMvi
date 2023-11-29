@@ -23,7 +23,11 @@ androidxComposeNavigation = "2.7.5"
 #https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.48"
 #https://developer.android.com/jetpack/androidx/releases/hilt?hl=ko
-hiltNavigationCompose = "1.0.0"
+hiltNavigationCompose = "1.1.0"
+#https://central.sonatype.com/artifact/com.squareup.okhttp3/okhttp/4.11.0?smo=true
+okhttp = "4.12.0"
+#https://github.com/square/retrofit
+retrofit = "2.9.0"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -54,6 +58,11 @@ compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
+
+#network
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
 #test
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
