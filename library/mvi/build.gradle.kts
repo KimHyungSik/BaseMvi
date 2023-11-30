@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.example.library"
+    namespace = "com.example.mvi"
 }

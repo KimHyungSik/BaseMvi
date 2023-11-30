@@ -1,4 +1,4 @@
-package com.example.library
+package com.example.mvi
 
 import org.junit.Test
 
