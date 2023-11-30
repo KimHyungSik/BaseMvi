@@ -9,5 +9,7 @@ configureAndroidLibrary()
 
 configurationKotlinSerialization()
 
+configureHiltAndroid()
+
 configureAndroidTest()
 configureKotlinTest()

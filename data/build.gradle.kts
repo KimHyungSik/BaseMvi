@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.example.mviskeletonapp.data"
 }
+
+dependencies {
+    implementation(project(":domain"))
+}
