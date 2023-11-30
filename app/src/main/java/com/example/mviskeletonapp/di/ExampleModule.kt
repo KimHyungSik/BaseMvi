@@ -1,32 +1,33 @@
 package com.example.mviskeletonapp.di
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.example.data.remote.example.ExampleService
+import com.example.data.repository.example.ExampleRepositoryImp
+import com.example.domain.repository.ExampleRepository
+import com.example.domain.usecase.example.ExampleUseCase
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import kotlinx.serialization.json.Json
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object ExampleModule {
+object ExampleModule {
     @Provides
-    @Singleton
-    fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder().build()
+    fun providerExampleService(retrofit: Retrofit): ExampleService =
+        retrofit.create(ExampleService::class.java)
 
     @Provides
-    @Singleton
-    fun providerRetrofit(
-        okHttpClient: OkHttpClient,
-    ): Retrofit{
-        val contentType = "application/json".toMediaType()
-        return Retrofit.Builder()
-            .baseUrl("https://reqres.in/api/users/")
-            .addConverterFactory(Json.asConverterFactory(contentType))
-            .client(okHttpClient).build()
-    }
+    fun providerExampleUseCase(repository: ExampleRepository) = ExampleUseCase(repository)
 }
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class ExampleRepositoryModule {
+
+    @Binds
+    abstract fun bindExampleRepository(exampleRepository: ExampleRepositoryImp): ExampleRepository
+}
+

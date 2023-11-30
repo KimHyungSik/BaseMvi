@@ -1,10 +1,10 @@
 package com.example.domain.model.example
 
-data class Example(
-    val `data`: List<DataResponse>,
+data class ExampleDataDto(
+    val dataList: List<DataDto>,
     val page: Int,
     val per_page: Int,
-    val support: Support,
+    val support: SupportDto,
     val total: Int,
     val total_pages: Int
 )

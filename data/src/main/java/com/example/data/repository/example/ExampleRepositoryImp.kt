@@ -1,7 +1,7 @@
 package com.example.data.repository.example
 
 import com.example.data.remote.example.ExampleService
-import com.example.domain.model.example.Data
+import com.example.domain.model.example.ExampleDataDto
 import com.example.domain.model.example.toDto
 import com.example.domain.repository.ExampleRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,8 +11,7 @@ import javax.inject.Inject
 class ExampleRepositoryImp @Inject constructor(
     private val api: ExampleService
 ) : ExampleRepository {
-    override suspend fun getExampleData(): Flow<Data> = flow {
+    override suspend fun getExampleData(): Flow<ExampleDataDto> = flow {
         emit(api.getExample().toDto())
     }
-
 }

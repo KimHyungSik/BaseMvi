@@ -1,6 +1,6 @@
 package com.example.domain.model.example
 
-data class Data(
+data class DataDto(
     val avatar: String,
     val email: String,
     val first_name: String,

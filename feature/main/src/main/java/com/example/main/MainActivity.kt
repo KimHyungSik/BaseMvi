@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
     private fun MainScreen(
         viewModel: MainViewModel = hiltViewModel()
     ) {
+        viewModel.init()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

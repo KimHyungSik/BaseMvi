@@ -6,3 +6,7 @@ android {
     namespace = "com.example.mviskeletonapp.feature.main"
 }
 
+dependencies {
+    implementation(project(":domain"))
+}
+
