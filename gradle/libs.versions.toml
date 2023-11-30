@@ -34,6 +34,8 @@ kotlin-serialization = "1.9.20"
 kotlin-serialization-json = "1.6.1"
 #https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter
 retrofit-kotlin-serialization-converter = "1.0.0"
+#https://github.com/Kotlin/kotlinx.coroutines
+coroutine = "1.7.3"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -72,6 +74,11 @@ retrofit-kotlin-serialization-converter = { group = "com.jakewharton.retrofit", 
 
 #serialization
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization-json" }
+
+#coroutine
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine" }
 
 #test
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
