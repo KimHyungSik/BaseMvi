@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
             exampleUseCase.getExample()
                 .collect {
                     Log.d("LOGEE", "init: $it")
-                    emitIntent(MainIntent.MainMviIntent.GetExample)
+                    emitIntent(MainIntent.MainMviIntent.GetExample(it))
                 }
         }
     }

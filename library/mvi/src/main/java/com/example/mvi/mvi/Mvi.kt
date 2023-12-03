@@ -3,6 +3,7 @@ package com.example.mvi.mvi
 /**
  * MviIntent -> Model -> UiState -> View
  * MviIntent -> SideEffect -> MviIntent -> UiState -> View
+ *
  */
 
 /**

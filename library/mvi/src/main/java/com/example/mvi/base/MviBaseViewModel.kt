@@ -78,6 +78,9 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
         uiIntentMap[MviIntentKey(IT::class.java)] = init as (State, Intent) -> State
     }
 
+    /**
+     * handleIntent 로 등록되 Intent 들의 처리를 수행한다.
+     */
     private fun subscribeIntent() {
         viewModelScope.launch {
             intent.collect { intent ->

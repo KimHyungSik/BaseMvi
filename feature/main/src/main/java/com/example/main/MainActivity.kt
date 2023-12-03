@@ -3,14 +3,19 @@ package com.example.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mvi.ext.emitMviIntent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,31 +34,40 @@ class MainActivity : ComponentActivity() {
     private fun MainScreen(
         viewModel: MainViewModel = hiltViewModel()
     ) {
-        viewModel.emitIntent(MainIntent.MainMviIntent.CallExample)
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Greeting("Android")
+            Greeting(
+                onClick = viewModel::emitIntent,
+            )
         }
     }
 }
 
 @Composable
 fun Greeting(
-    name: String,
+    onClick: emitMviIntent<MainIntent.MainMviIntent>,
     modifier: Modifier = Modifier
 ) {
-    Text(
-        text = "Hello $name!",
+    Column(
         modifier = modifier
-    )
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = {
+            onClick(MainIntent.MainMviIntent.CallExample)
+        }) {
+
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MaterialTheme {
-        Greeting("Android")
+        Greeting(onClick = {})
     }
 }
