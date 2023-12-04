@@ -57,7 +57,7 @@ fun Greeting(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(onClick = {
-            onClick(MainIntent.MainMviIntent.CallExample)
+            onClick(MainIntent.MainMviIntent.SetToken("test@example.com", "token"))
         }) {
 
         }

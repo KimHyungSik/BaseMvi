@@ -1,38 +1,32 @@
 package com.example.main
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
+import com.example.account.AccountManagerHelper
 import com.example.domain.usecase.example.ExampleUseCase
 import com.example.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val exampleUseCase: ExampleUseCase
+    private val accountManagerHelper: AccountManagerHelper
 ) : MviViewModel<MainIntent.MainMviIntent, MainIntent.MainState, MainIntent.Effect>() {
-    private fun callApi() {
-        viewModelScope.launch {
-            exampleUseCase.getExample()
-                .collect {
-                    Log.d("LOGEE", "init: $it")
-                    emitIntent(MainIntent.MainMviIntent.GetExample(it))
-                }
-        }
+    private fun callApi(email: String, token: String) {
+        accountManagerHelper.setAuthToken(email, token)
     }
 
-    override fun createInitialState(): MainIntent.MainState = MainIntent.MainState(false)
+    override fun createInitialState(): MainIntent.MainState = MainIntent.MainState(
+        isLoading = false,
+        isSuccessSetToken = false,
+    )
 
     override fun handleIntent() {
-        subscribeIntent<MainIntent.MainMviIntent.CallExample> {
-            callApi()
+        subscribeIntent<MainIntent.MainMviIntent.SetToken> {
+            callApi(it.email, it.token)
         }
         subscribeStateIntent<MainIntent.MainMviIntent.Loading> { state, _ ->
             state.copy(isLoading = false)
         }
-        subscribeStateIntent<MainIntent.MainMviIntent.GetExample> { state, intent ->
+        subscribeStateIntent<MainIntent.MainMviIntent.GetToken> { state, intent ->
             state.copy(isLoading = true)
         }
     }

@@ -6,19 +6,23 @@ import com.example.mvi.mvi.SideEffect
 import com.example.mvi.mvi.UiState
 
 class MainIntent {
-    sealed interface MainMviIntent: MviIntent {
-        data object Loading: MainMviIntent
-        data object CallExample: MainMviIntent
-        data class GetExample(
-            val exampleDataDto: ExampleDataDto
-        ): MainMviIntent
+    sealed interface MainMviIntent : MviIntent {
+        data object Loading : MainMviIntent
+        data class SetToken(
+            val email: String,
+            val token: String
+        ) : MainMviIntent
+
+        data object GetToken : MainMviIntent
     }
 
     data class MainState(
-        val isLoading: Boolean
-    ): UiState
+        val isLoading: Boolean,
+        val isSuccessSetToken: Boolean,
+        val token: String? = null
+    ) : UiState
 
-    sealed class Effect: SideEffect{
+    sealed class Effect : SideEffect {
 
     }
 }

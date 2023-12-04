@@ -9,5 +9,6 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":library:mvi"))
+    implementation(project(":library:account"))
 }
 
