@@ -12,7 +12,9 @@ class MainIntent {
             val token: String
         ) : MainMviIntent
 
-        data object GetToken : MainMviIntent
+        data class GetToken(
+            val token: String
+        ) : MainMviIntent
     }
 
     data class MainState(

@@ -35,9 +35,7 @@ class Authenticator(
         options: Bundle?
     ): Bundle = Bundle()
 
-    override fun getAuthTokenLabel(authTokenType: String?): String {
-        TODO("Not yet implemented")
-    }
+    override fun getAuthTokenLabel(authTokenType: String?): String = ""
 
     override fun updateCredentials(
         response: AccountAuthenticatorResponse?,
