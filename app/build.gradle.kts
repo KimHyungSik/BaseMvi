@@ -11,6 +11,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":feature:main"))
 
+    implementation(project(":library:account"))
+
     implementation(libs.okhttp)
     implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
