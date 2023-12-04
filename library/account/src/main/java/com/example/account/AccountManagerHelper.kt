@@ -7,7 +7,7 @@ import android.os.Bundle
 
 class AccountManagerHelper(
     private val accountManager: AccountManager,
-    private val authKey: AuthKey
+    private val authKey: AuthenticatorKey
 ) {
 
     fun addAccount(activity: Activity) {

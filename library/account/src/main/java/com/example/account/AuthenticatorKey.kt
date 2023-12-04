@@ -1,6 +1,6 @@
 package com.example.account
 
-interface AuthKey {
+interface AuthenticatorKey {
     val accountType: String
     val authTokenType: String
 }
