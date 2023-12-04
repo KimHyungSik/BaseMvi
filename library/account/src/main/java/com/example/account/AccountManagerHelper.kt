@@ -9,22 +9,12 @@ class AccountManagerHelper(
     private val accountManager: AccountManager,
     private val authKey: AuthenticatorKey
 ) {
-
-    fun addAccount(activity: Activity) {
-        val options = Bundle()
-        accountManager.addAccount(
-            authKey.accountType,
-            authKey.authTokenType,
-            null,
-            options,
-            activity,
-            null,
-            null
-        )
-    }
-
-    fun setAuthToken(name: String, token: String) {
-        val account = Account(name, authKey.accountType)
+    fun setAuthToken(email: String, token: String) {
+        val account = Account(email, authKey.accountType)
+        val accounts = accountManager.getAccountsByType(authKey.accountType)
+        if(accounts.isEmpty()){
+            accountManager.addAccountExplicitly(account, null, Bundle())
+        }
         accountManager.setAuthToken(account, authKey.authTokenType, token)
     }
 }
