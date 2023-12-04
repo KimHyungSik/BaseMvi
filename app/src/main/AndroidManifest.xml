@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MviSkeletonApp"
         tools:targetApi="31">
-        <service android:name="com.example.account.AuthenticatorService"
+        <service android:name="com.mvi.account.AuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

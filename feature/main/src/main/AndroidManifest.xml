@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.example.main.MainActivity"
+            android:name="com.mvi.main.MainActivity"
             android:exported="true">
 
             <intent-filter>

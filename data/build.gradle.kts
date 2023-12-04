@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mviskeletonapp.data"
+    namespace = "com.mvi.skeleton.data"
 }
 
 dependencies {
