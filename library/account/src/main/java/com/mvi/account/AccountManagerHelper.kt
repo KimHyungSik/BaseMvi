@@ -9,6 +9,18 @@ class AccountManagerHelper(
     private val accountManager: AccountManager,
     private val authKey: AuthenticatorKey
 ) {
+
+    /**
+     * Token 삭제.
+     */
+    fun removeAuthToken(){
+        val account = getAuthToken() ?: return
+        accountManager.removeAccountExplicitly(account)
+    }
+
+    /**
+     * @return accountType 의로 찾은 첫번째 계정을 반환 한다.
+     */
     fun getAuthToken(): Account? {
         val accounts = accountManager.getAccountsByType(authKey.accountType)
         if(accounts.isEmpty()){

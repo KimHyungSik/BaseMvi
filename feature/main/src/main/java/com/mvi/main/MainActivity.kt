@@ -60,6 +60,11 @@ fun Greeting(
         }) {
 
         }
+        Button(onClick = {
+            onClick(MainIntent.MainMviIntent.RemoveToken)
+        }) {
+
+        }
     }
 }
 

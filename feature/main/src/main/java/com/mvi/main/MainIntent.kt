@@ -7,6 +7,9 @@ import com.mvi.mvi.mvi.UiState
 class MainIntent {
     sealed interface MainMviIntent : MviIntent {
         data object Loading : MainMviIntent
+
+        data object RemoveToken : MainMviIntent
+
         data class SetToken(
             val email: String,
             val token: String

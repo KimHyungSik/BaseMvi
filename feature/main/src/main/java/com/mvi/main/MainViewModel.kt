@@ -10,6 +10,10 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val accountManagerHelper: AccountManagerHelper
 ) : MviViewModel<MainIntent.MainMviIntent, MainIntent.MainState, MainIntent.Effect>() {
+
+    private fun removeToken(){
+        accountManagerHelper.removeAuthToken()
+    }
     private fun callApi(email: String, token: String) {
         accountManagerHelper.setAuthToken(
             email = email,
@@ -29,6 +33,9 @@ class MainViewModel @Inject constructor(
     override fun handleIntent() {
         subscribeIntent<MainIntent.MainMviIntent.SetToken> {
             callApi(it.email, it.token)
+        }
+        subscribeIntent<MainIntent.MainMviIntent.RemoveToken> {
+            removeToken()
         }
         subscribeStateIntent<MainIntent.MainMviIntent.Loading> { state, _ ->
             state.copy(isLoading = false)
