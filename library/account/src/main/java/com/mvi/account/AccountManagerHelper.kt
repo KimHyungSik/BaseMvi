@@ -62,8 +62,8 @@ class AccountManagerHelper(
         accountManager.setAuthToken(account, authKey.authTokenType, token)
     }
 
-    suspend inline fun <R> AccountManager.callAsync(crossinline operation: AccountManager?.(CoroutineAccountManagerCallback<R>) -> Unit): R {
-        return suspendCancellableCoroutine<R> { cont ->
+    private suspend inline fun <R> AccountManager.callAsync(crossinline operation: AccountManager?.(CoroutineAccountManagerCallback<R>) -> Unit): R {
+        return suspendCancellableCoroutine { cont ->
             operation(CoroutineAccountManagerCallback(cont))
         }
     }
