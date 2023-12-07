@@ -7,5 +7,4 @@ object ExampleAuthenticatorKey: AuthenticatorKey {
         get() = "example_account"
     override val authTokenType: String
         get() = "example_authToken"
-
 }
