@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(
             password = null,
             token = token
         )
-        accountManagerHelper.getAuthToken()?.let {
+        accountManagerHelper.getAccount()?.let {
             emitIntent(MainIntent.MainMviIntent.GetToken(it.name))
         }
     }
