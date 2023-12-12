@@ -4,6 +4,16 @@ plugins {
 
 android {
     namespace = "com.mvi.skeleton"
+
+    buildTypes{
+        getByName("debug"){
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
 }
 
 dependencies {
