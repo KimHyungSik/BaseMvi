@@ -1,5 +1,6 @@
-package com.mvi.domain.model.example
+package com.mvi.data.model.example
 
+import com.mvi.domain.model.example.SupportDto
 import kotlinx.serialization.Serializable
 
 @Serializable

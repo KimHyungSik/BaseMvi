@@ -1,6 +1,6 @@
 package com.mvi.data.remote.example
 
-import com.mvi.domain.model.example.ExampleResponse
+import com.mvi.data.model.example.ExampleResponse
 import retrofit2.http.GET
 
 interface ExampleService {
