@@ -8,8 +8,7 @@ internal fun Project.configureAndroidLibrary() {
     val libs = extensions.libs
     with(pluginManager) {
         apply("com.android.library")
-        apply("kotlin-android")
-        apply("kotlinx-serialization")
+        apply("org.jetbrains.kotlin.android")
     }
 
     configureKotlinAndroid()
