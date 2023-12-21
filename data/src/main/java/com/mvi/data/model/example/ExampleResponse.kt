@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ExampleResponse(
     @SerialName("data") val dataList: List<Data>,
-    val page: Int,
-    val per_page: Int,
-    val support: Support,
-    val total: Int,
-    val total_pages: Int
+    @SerialName("page") val page: Int,
+    @SerialName("per_page") val per_page: Int,
+    @SerialName("support") val support: Support,
+    @SerialName("total") val total: Int,
+    @SerialName("total_pages") val total_pages: Int
 )
 
 fun ExampleResponse.toDto() =
