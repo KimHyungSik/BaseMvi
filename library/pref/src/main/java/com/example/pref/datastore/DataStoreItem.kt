@@ -1,6 +1,7 @@
 package com.example.pref.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
@@ -10,67 +11,75 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
+import kotlin.reflect.KClass
 
 open class DataStoreItem(
     private val context: Context,
     private val domain: String
 ) {
 
-    private val dataStore = PreferenceDataStoreFactory.create {
+    val keyType: MutableMap<String, KClass<*>> = mutableMapOf()
+
+    val dataStore = PreferenceDataStoreFactory.create {
         context.preferencesDataStoreFile(domain)
     }
 
-    suspend fun <T> put(key: String, data: T) {
+    suspend inline fun <reified T> put(key: String, data: T) {
         when (data) {
-            is Int -> putInt(key, data)
-            is Long -> putLong(key, data)
-            is Float -> putFloat(key, data)
-            is Boolean -> putBoolean(key, data)
-            is Double -> putDouble(key, data)
-            is String -> putString(key, data)
+            is Int -> safeDataStoreOperation<Int>(key) { preferences ->
+                preferences[intPreferencesKey(key)] = data
+            }
+
+            is Long -> safeDataStoreOperation<Long>(key) { preferences ->
+                preferences[longPreferencesKey(key)] = data
+            }
+
+            is Float -> safeDataStoreOperation<Float>(key) { preferences ->
+                preferences[floatPreferencesKey(key)] = data
+            }
+
+            is Boolean -> safeDataStoreOperation<Boolean>(key) { preferences ->
+                preferences[booleanPreferencesKey(key)] = data
+            }
+
+            is Double -> safeDataStoreOperation<Double>(key) { preferences ->
+                preferences[doublePreferencesKey(key)] = data
+            }
+
+            is String -> safeDataStoreOperation<String>(key) { preferences ->
+                preferences[stringPreferencesKey(key)] = data
+            }
+
+            else -> {
+                val serializedData = serializable(data)
+                safeDataStoreOperation<String>(key) { preferences ->
+                    preferences[stringPreferencesKey(key)] = serializedData
+                }
+            }
         }
     }
 
-    private suspend fun putInt(key: String, data: Int) {
-        val intKey = intPreferencesKey(key)
-        dataStore.edit { preferences ->
-            preferences[intKey] = data
+    inline fun <reified T> serializable(data: T): String {
+        return try {
+            Json.encodeToString(data)
+        } catch (e: Exception) {
+            throw DataStoreException("Failed to serialize data", e)
         }
     }
 
-    private suspend fun putLong(key: String, data: Long) {
-        val longKey = longPreferencesKey(key)
-        dataStore.edit { preferences ->
-            preferences[longKey] = data
-        }
-    }
-
-    private suspend fun putFloat(key: String, data: Float) {
-        val floatKey = floatPreferencesKey(key)
-
-        dataStore.edit { preferences ->
-            preferences[floatKey] = data
-        }
-    }
-
-    private suspend fun putBoolean(key: String, data: Boolean) {
-        val booleanKey = booleanPreferencesKey(key)
-        dataStore.edit { preferences ->
-            preferences[booleanKey] = data
-        }
-    }
-
-    private suspend fun putDouble(key: String, data: Double) {
-        val doubleKey = doublePreferencesKey(key)
-        dataStore.edit { preferences ->
-            preferences[doubleKey] = data
-        }
-    }
-
-    private suspend fun putString(key: String, data: String) {
-        val stringKey = stringPreferencesKey(key)
-        dataStore.edit { preferences ->
-            preferences[stringKey] = data
+    suspend inline fun <reified T> safeDataStoreOperation(
+        key: String,
+        crossinline operation: (preferences: MutablePreferences) -> Unit
+    ) {
+        try {
+            dataStore.edit { preferences ->
+                operation(preferences)
+            }
+            keyType[key] = T::class
+        } catch (e: Exception) {
+            throw DataStoreException(key, e)
         }
     }
 }
