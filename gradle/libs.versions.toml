@@ -3,9 +3,9 @@
 #참고 https://developer.android.com/build/releases/gradle-plugin
 #https://mvnrepository.com/artifact/com.android.application/com.android.application.gradle.plugin
 androidGradlePlugin = "8.1.4"
-kotlin = "1.9.20"
+kotlin = "1.9.21"
 #https://developer.android.com/jetpack/androidx/releases/compose-compiler
-androidxComposeCompiler = "1.5.4"
+androidxComposeCompiler = "1.5.7"
 
 #의존성
 #https://developer.android.com/jetpack/androidx/releases/core
