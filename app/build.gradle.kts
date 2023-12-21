@@ -22,6 +22,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":feature:main"))
 
+    implementation(project(":library:pref"))
     implementation(project(":library:account"))
 
     implementation(libs.okhttp)
