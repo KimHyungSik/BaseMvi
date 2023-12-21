@@ -9,6 +9,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import kotlinx.serialization.json.Json
+import retrofit2.Converter
 import javax.inject.Singleton
 
 @Module
@@ -20,13 +21,27 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideJson(): Json = Json {
+        ignoreUnknownKeys = true
+    }
+
+    @Provides
+    @Singleton
+    fun provideConverterFactory(
+        json: Json,
+    ): Converter.Factory {
+        return json.asConverterFactory("application/json".toMediaType())
+    }
+
+    @Provides
+    @Singleton
     fun providerRetrofit(
         okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
     ): Retrofit{
-        val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
             .baseUrl("https://reqres.in/")
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(converterFactory)
             .client(okHttpClient).build()
     }
 }

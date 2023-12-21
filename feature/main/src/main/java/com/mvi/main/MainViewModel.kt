@@ -16,24 +16,16 @@ class MainViewModel @Inject constructor(
     private val accountManagerHelper: AccountManagerHelper
 ) : MviViewModel<MainIntent.MainMviIntent, MainIntent.MainState, MainIntent.Effect>() {
 
-    init {
-        viewModelScope.launch {
-            exampleUseCase.getExample()
-        }
-    }
-
     private fun removeToken() {
         accountManagerHelper.removeAuthToken()
     }
 
     private fun callApi(email: String, token: String) {
-        accountManagerHelper.setAuthToken(
-            email = email,
-            password = null,
-            token = token
-        )
-        accountManagerHelper.getAccount()?.let {
-            emitIntent(MainIntent.MainMviIntent.GetToken(it.name))
+        viewModelScope.launch {
+            exampleUseCase.getExample()
+                .collect{
+                    Log.d("LOGEE", "callApi: $it")
+                }
         }
     }
 
