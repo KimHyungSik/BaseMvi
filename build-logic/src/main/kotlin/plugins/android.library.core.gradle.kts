@@ -1,4 +1,5 @@
 import config.configurationKotlinSerialization
+import config.configureAndroidCompose
 import config.configureAndroidLibrary
 import config.configureAndroidTest
 import config.configureCoroutineAndroid

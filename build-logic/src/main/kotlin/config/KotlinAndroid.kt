@@ -45,7 +45,7 @@ internal fun Project.configureKotlinAndroid() {
     }
 
     tasks.withType(KotlinCompile::class.java).configureEach {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_19.toString()
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     dependencies{
