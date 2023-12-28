@@ -1,6 +1,9 @@
 package com.mvi.skeleton.di
 
+import androidx.core.os.BuildCompat
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.mvi.skeleton.BuildConfig
+import com.mvi.skeleton.NetworkConstant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,7 +12,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import kotlinx.serialization.json.Json
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -17,7 +22,18 @@ import javax.inject.Singleton
 internal object NetworkModule {
     @Provides
     @Singleton
-    fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder().build()
+    fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(NetworkConstant.connectTimeout, TimeUnit.SECONDS)
+        .writeTimeout(NetworkConstant.writeTiemout, TimeUnit.SECONDS)
+        .readTimeout(NetworkConstant.readTiemout, TimeUnit.SECONDS)
+        .apply {
+            if (BuildConfig.DEBUG) {
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    this.level = HttpLoggingInterceptor.Level.BODY
+                })
+            }
+        }
+        .build()
 
     @Provides
     @Singleton
@@ -38,7 +54,7 @@ internal object NetworkModule {
     fun providerRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
-    ): Retrofit{
+    ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://reqres.in/")
             .addConverterFactory(converterFactory)

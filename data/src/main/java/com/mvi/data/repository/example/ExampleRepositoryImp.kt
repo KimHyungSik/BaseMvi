@@ -18,7 +18,9 @@ class ExampleRepositoryImp @Inject constructor(
 ) : ExampleRepository {
     override suspend fun getExampleData(): Flow<ExampleDataDto>{
         Log.d("LOGEE", "ExampleRepositoryImp")
-        val exampleResponse = api.getExample().toDto()
+        val exampleResponse = api.getExample()
+        Log.d("LOGEE", "getExampleData: $exampleResponse")
+        val dto = exampleResponse.toDto()
         Log.d("LOGEE", "getExampleData: $exampleResponse")
         dataStoreItem.put("Key", exampleResponse)
         val getFromDataStore = dataStoreItem.get(
@@ -28,6 +30,6 @@ class ExampleRepositoryImp @Inject constructor(
             )
         )
         Log.d("LOGEE", "getExampleData: $getFromDataStore")
-        return flowOf(exampleResponse)
+        return flowOf(dto)
     }
 }

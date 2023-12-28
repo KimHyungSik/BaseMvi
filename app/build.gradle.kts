@@ -5,8 +5,12 @@ plugins {
 android {
     namespace = "com.mvi.skeleton"
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes{
-        getByName("debug"){
+        debug {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -26,6 +30,7 @@ dependencies {
     implementation(project(":library:account"))
 
     implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.kotlin.serialization.converter)
