@@ -1,6 +1,6 @@
 package com.example.pref.datastore
 
 class DataStoreException(
-    message: String,
+    message: String = "",
     cause: Throwable? = null
 ) : RuntimeException(message, cause)
