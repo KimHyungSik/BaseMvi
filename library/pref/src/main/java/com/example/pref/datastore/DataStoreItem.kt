@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
@@ -33,13 +32,12 @@ open class DataStoreItem(
 
     suspend inline fun <reified T> get(key: String, defaultValue: T): Flow<T> {
         val valueClass = keyType[key] ?: return flowOf(defaultValue)
-
         return dataStore.data
-            .catch { exception ->
-                emit(emptyPreferences())
+            .catch { message ->
+                throw DataStoreException(cause = message)
             }
             .map { preferences ->
-                when (valueClass) {
+                val value: Any? = when (valueClass) {
                     Int::class -> preferences[intPreferencesKey(key)]
                     Long::class -> preferences[longPreferencesKey(key)]
                     Float::class -> preferences[floatPreferencesKey(key)]
@@ -48,13 +46,10 @@ open class DataStoreItem(
                     String::class -> preferences[stringPreferencesKey(key)]
                     else -> {
                         val json = preferences[stringPreferencesKey(key)]
-                        if (json != null) {
-                            Json.decodeFromString<T>(json)
-                        } else {
-                            null
-                        }
+                        json?.let { Json.decodeFromString<T>(it) }
                     }
-                } as? T ?: defaultValue
+                }
+                value as? T ?: defaultValue
             }
     }
 
@@ -86,7 +81,7 @@ open class DataStoreItem(
 
             else -> {
                 val serializedData = serializable(data)
-                safeDataStoreOperation<String>(key) { preferences ->
+                safeDataStoreOperation<KClass<Any>>(key) { preferences ->
                     preferences[stringPreferencesKey(key)] = serializedData
                 }
             }
