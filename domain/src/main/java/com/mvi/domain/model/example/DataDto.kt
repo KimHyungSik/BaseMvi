@@ -1,5 +1,8 @@
 package com.mvi.domain.model.example
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class DataDto(
     val avatar: String,
     val email: String,

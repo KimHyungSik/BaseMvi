@@ -1,5 +1,8 @@
 package com.mvi.domain.model.example
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ExampleDataDto(
     val dataList: List<DataDto>,
     val page: Int,
