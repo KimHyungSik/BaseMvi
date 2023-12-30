@@ -11,10 +11,12 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
+import com.example.pref.PrefItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlin.reflect.KClass
@@ -22,15 +24,15 @@ import kotlin.reflect.KClass
 open class DataStoreItem(
     private val context: Context,
     private val domain: String
-) {
+) : PrefItem {
 
-    val keyType: MutableMap<String, KClass<*>> = mutableMapOf()
+    private val keyType: MutableMap<String, KClass<*>> = mutableMapOf()
 
-    val dataStore = PreferenceDataStoreFactory.create {
+    private val dataStore = PreferenceDataStoreFactory.create {
         context.preferencesDataStoreFile(domain)
     }
 
-    suspend inline fun <reified T> get(key: String, defaultValue: T): Flow<T> {
+    private fun <T> getFromDataStore(key: String, defaultValue: T): Flow<T> {
         val valueClass = keyType[key] ?: return flowOf(defaultValue)
         return dataStore.data
             .catch { message ->
@@ -46,14 +48,16 @@ open class DataStoreItem(
                     String::class -> preferences[stringPreferencesKey(key)]
                     else -> {
                         val json = preferences[stringPreferencesKey(key)]
-                        json?.let { Json.decodeFromString<T>(it) }
+                        json?.let { Json.decodeFromString(it) }
                     }
                 }
+
+                @Suppress("UNCHECKED_CAST")
                 value as? T ?: defaultValue
             }
     }
 
-    suspend inline fun <reified T> put(key: String, data: T) {
+    private suspend fun <T> putToDataStore(key: String, data: T) {
         when (data) {
             is Int -> safeDataStoreOperation<Int>(key) { preferences ->
                 preferences[intPreferencesKey(key)] = data
@@ -79,24 +83,18 @@ open class DataStoreItem(
                 preferences[stringPreferencesKey(key)] = data
             }
 
-            else -> {
-                val serializedData = serializable(data)
+            is KSerializer<*> -> {
+                val serializedData = Json.encodeToString(data)
                 safeDataStoreOperation<KClass<Any>>(key) { preferences ->
                     preferences[stringPreferencesKey(key)] = serializedData
                 }
             }
+
+            else -> throw DataStoreException(message = " This class does not have a serializer.")
         }
     }
 
-    inline fun <reified T> serializable(data: T): String {
-        return try {
-            Json.encodeToString(data)
-        } catch (e: Exception) {
-            throw DataStoreException("Failed to serialize data", e)
-        }
-    }
-
-    suspend inline fun <reified T> safeDataStoreOperation(
+    private suspend inline fun <reified T> safeDataStoreOperation(
         key: String,
         crossinline operation: (preferences: MutablePreferences) -> Unit
     ) {
@@ -107,6 +105,32 @@ open class DataStoreItem(
             keyType[key] = T::class
         } catch (e: Exception) {
             throw DataStoreException(key, e)
+        }
+    }
+
+    override suspend fun <T> get(key: String, defaultValue: T): Flow<T> =
+        getFromDataStore<T>(key, defaultValue)
+
+    override suspend fun <T> put(key: String, data: T) = putToDataStore(key, data)
+    override suspend fun clear(key: String) {
+        val valueClass = keyType[key] ?: return
+
+        dataStore.edit { preferences ->
+            when (valueClass) {
+                Int::class -> preferences.remove(intPreferencesKey(key))
+                Long::class -> preferences.remove(longPreferencesKey(key))
+                Float::class -> preferences.remove(floatPreferencesKey(key))
+                Boolean::class -> preferences.remove(booleanPreferencesKey(key))
+                Double::class -> preferences.remove(doublePreferencesKey(key))
+                String::class -> preferences.remove(stringPreferencesKey(key))
+                else -> preferences.remove(stringPreferencesKey(key))
+            }
+        }
+    }
+
+    override suspend fun clearAll() {
+        keyType.keys.forEach { key ->
+            clear(key)
         }
     }
 }
