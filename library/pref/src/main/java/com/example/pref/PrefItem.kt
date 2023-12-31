@@ -6,6 +6,5 @@ interface PrefItem {
     suspend fun <T> get(key: String, defaultValue: T): Flow<T>
     suspend fun <T> put(key: String, data: T)
     suspend fun clear(key: String)
-
     suspend fun clearAll()
 }
