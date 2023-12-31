@@ -1,9 +1,9 @@
-package com.mvi.skeleton.di
+package com.example.di
 
 import android.accounts.AccountManager
 import android.content.Context
+import com.example.di.authenticator.ExampleAuthenticatorKey
 import com.mvi.account.AccountManagerHelper
-import com.mvi.skeleton.authenticator.ExampleAuthenticatorKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

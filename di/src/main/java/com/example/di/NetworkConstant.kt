@@ -1,4 +1,4 @@
-package com.mvi.skeleton
+package com.example.di
 
 object NetworkConstant {
     val connectTimeout = 10L

@@ -1,4 +1,4 @@
-package com.mvi.skeleton.di
+package com.example.di
 
 import com.mvi.data.remote.example.ExampleService
 import com.mvi.data.repository.example.ExampleRepositoryImp

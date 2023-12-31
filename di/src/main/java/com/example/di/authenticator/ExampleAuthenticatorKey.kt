@@ -1,4 +1,4 @@
-package com.mvi.skeleton.authenticator
+package com.example.di.authenticator
 
 import com.mvi.account.AuthenticatorKey
 

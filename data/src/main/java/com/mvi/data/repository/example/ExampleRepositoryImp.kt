@@ -10,13 +10,11 @@ import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class ExampleRepositoryImp @Inject constructor(
-    private val dataStoreItem: DataStoreItem,
     private val api: ExampleService
 ) : ExampleRepository {
     override suspend fun getExampleData(): Flow<ExampleDataDto> {
         val exampleResponse = api.getExample()
         val dto = exampleResponse.toDto()
-        dataStoreItem.put("Key", dto)
 
         return flowOf(dto)
     }

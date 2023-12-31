@@ -1,11 +1,11 @@
-package com.mvi.skeleton.di.qualifier
+package com.example.di.qualifier
 
 import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class DataStorePref
+annotation class AccountPref
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class MemoryPref
+annotation class GlobalPref
