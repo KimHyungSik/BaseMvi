@@ -1,29 +1,30 @@
 package com.example.pref.manager
 
 import android.content.Context
+import com.example.pref.Pref
 import com.example.pref.PrefItem
-import com.example.pref.datastore.DataStoreItem
-import com.example.pref.memory.MemoryPrefItem
+import com.example.pref.datastore.DataStore
+import com.example.pref.memory.MemoryPref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 
-class PrefManager(
+open class PrefManager(
     private val appContext: Context,
     private val domainName: String
 ) {
-    private val dataStoreItem: PrefItem = DataStoreItem(appContext, domainName)
-    private val memoryPrefItem: PrefItem = MemoryPrefItem()
-    suspend fun <T> putData(key: String, data: T, strategy: PrefStrategy) {
-        getPrefItem(strategy).forEach {
+    private val dataStorePref: Pref = DataStore(appContext, domainName)
+    private val memoryPref: Pref = MemoryPref()
+    suspend fun <T> PrefItem<T>.putData(data: T) {
+        getPrefItem(prefStrategy).forEach {
             it.put(key, data)
         }
     }
 
-    suspend fun <T> getData(key: String, defaultValue: T): Flow<T> {
-        val memoryResult = memoryPrefItem.get(key, defaultValue).first()
+    suspend fun <T> PrefItem<T>.getData(): Flow<T> {
+        val memoryResult = memoryPref.get(key, defaultValue).first()
         return if (memoryResult == defaultValue) {
-            dataStoreItem.get(key, defaultValue)
+            dataStorePref.get(key, defaultValue)
         } else {
             flowOf(memoryResult)
         }
@@ -42,8 +43,8 @@ class PrefManager(
     }
 
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {
-        PrefStrategy.MEMORY_ONLY -> listOf(memoryPrefItem)
-        PrefStrategy.FILE_ONLY -> listOf(dataStoreItem)
-        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryPrefItem, dataStoreItem)
+        PrefStrategy.MEMORY_ONLY -> listOf(memoryPref)
+        PrefStrategy.FILE_ONLY -> listOf(dataStorePref)
+        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryPref, dataStorePref)
     }
 }

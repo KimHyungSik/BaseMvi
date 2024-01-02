@@ -11,7 +11,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.pref.PrefItem
+import com.example.pref.Pref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -21,10 +21,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlin.reflect.KClass
 
-open class DataStoreItem(
+open class DataStore(
     private val context: Context,
     private val domain: String
-) : PrefItem {
+) : Pref {
 
     private val keyType: MutableMap<String, KClass<*>> = mutableMapOf()
 

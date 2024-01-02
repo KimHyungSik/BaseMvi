@@ -1,6 +1,6 @@
 package com.example.pref.memory
 
-import com.example.pref.PrefItem
+import com.example.pref.Pref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 
-class MemoryPrefItem : PrefItem {
+class MemoryPref : Pref {
 
     private val _memoryPref = MutableStateFlow<MutableMap<String, Any?>>(mutableMapOf())
     private val memoryPref: StateFlow<MutableMap<String, Any?>> get() = _memoryPref
