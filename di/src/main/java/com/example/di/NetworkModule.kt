@@ -1,5 +1,6 @@
 package com.example.di
 
+import com.example.di.common.NetworkConstant
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.mvi.skeleton.data.BuildConfig
 import dagger.Module

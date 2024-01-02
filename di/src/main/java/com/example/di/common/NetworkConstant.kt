@@ -1,4 +1,4 @@
-package com.example.di
+package com.example.di.common
 
 object NetworkConstant {
     val connectTimeout = 10L

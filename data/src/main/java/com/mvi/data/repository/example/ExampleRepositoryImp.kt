@@ -1,6 +1,5 @@
 package com.mvi.data.repository.example
 
-import com.example.pref.datastore.DataStoreItem
 import com.mvi.data.remote.example.ExampleService
 import com.mvi.domain.model.example.ExampleDataDto
 import com.mvi.data.model.example.toDto
