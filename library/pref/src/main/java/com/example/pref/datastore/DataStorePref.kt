@@ -14,32 +14,32 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.pref.Pref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlin.reflect.KClass
 
-open class DataStore(
+class DataStorePref(
     private val context: Context,
     private val domain: String
 ) : Pref {
-
-    private val keyType: MutableMap<String, KClass<*>> = mutableMapOf()
 
     private val dataStore = PreferenceDataStoreFactory.create {
         context.preferencesDataStoreFile(domain)
     }
 
-    private fun <T> getFromDataStore(key: String, defaultValue: T): Flow<T> {
-        val valueClass = keyType[key] ?: return flowOf(defaultValue)
+    private suspend fun <T> getFromDataStore(
+        key: String,
+        defaultValue: T,
+        type: KClass<*>
+    ): Flow<T> {
         return dataStore.data
             .catch { message ->
                 throw DataStoreException(cause = message)
             }
             .map { preferences ->
-                val value: Any? = when (valueClass) {
+                val value: Any? = when (type) {
                     Int::class -> preferences[intPreferencesKey(key)]
                     Long::class -> preferences[longPreferencesKey(key)]
                     Float::class -> preferences[floatPreferencesKey(key)]
@@ -102,21 +102,19 @@ open class DataStore(
             dataStore.edit { preferences ->
                 operation(preferences)
             }
-            keyType[key] = T::class
         } catch (e: Exception) {
             throw DataStoreException(key, e)
         }
     }
 
-    override suspend fun <T> get(key: String, defaultValue: T): Flow<T> =
-        getFromDataStore<T>(key, defaultValue)
+    override suspend fun <T> get(key: String, defaultValue: T, type: KClass<*>): Flow<T> =
+        getFromDataStore<T>(key, defaultValue, type)
 
     override suspend fun <T> put(key: String, data: T) = putToDataStore(key, data)
-    override suspend fun clear(key: String) {
-        val valueClass = keyType[key] ?: return
+    override suspend fun clear(key: String, type: KClass<*>) {
 
         dataStore.edit { preferences ->
-            when (valueClass) {
+            when (type) {
                 Int::class -> preferences.remove(intPreferencesKey(key))
                 Long::class -> preferences.remove(longPreferencesKey(key))
                 Float::class -> preferences.remove(floatPreferencesKey(key))
@@ -129,8 +127,8 @@ open class DataStore(
     }
 
     override suspend fun clearAll() {
-        keyType.keys.forEach { key ->
-            clear(key)
+        dataStore.edit{ preferences ->
+            preferences.clear()
         }
     }
 }

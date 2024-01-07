@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlin.reflect.KClass
 
 
 class MemoryPref : Pref {
@@ -14,7 +15,7 @@ class MemoryPref : Pref {
     private val memoryPref: StateFlow<MutableMap<String, Any?>> get() = _memoryPref
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun <T> get(key: String, defaultValue: T): Flow<T> =
+    override suspend fun <T> get(key: String, defaultValue: T, type: KClass<*>): Flow<T> =
         memoryPref.map { it[key] as? T ?: defaultValue }
 
     override suspend fun <T> put(key: String, data: T) {
@@ -23,7 +24,7 @@ class MemoryPref : Pref {
         _memoryPref.update { map }
     }
 
-    override suspend fun clear(key: String) {
+    override suspend fun clear(key: String, type: KClass<*>) {
         val map = _memoryPref.value
         map.remove(key)
         _memoryPref.update { map }
