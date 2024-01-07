@@ -2,24 +2,31 @@ package com.mvi.main
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.example.di.qualifier.GlobalPref
-import com.example.pref.manager.PrefManager
 import com.mvi.account.AccountManagerHelper
 import com.mvi.domain.usecase.example.ExampleUseCase
 import com.mvi.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    @GlobalPref private val prefManager: PrefManager,
     private val exampleUseCase: ExampleUseCase,
     private val accountManagerHelper: AccountManagerHelper
 ) : MviViewModel<MainIntent.MainMviIntent, MainIntent.MainState, MainIntent.Effect>() {
 
     init {
         viewModelScope.launch {
+            launch(Dispatchers.IO) {
+                exampleUseCase.getSamplePref()
+                    .collect {
+                        Log.d("LOGEE", "Result $it: ")
+                    }
+            }
+            exampleUseCase.setSamplePref("World!")
+            exampleUseCase.setSamplePref("Kim!")
         }
     }
 
