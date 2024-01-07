@@ -1,27 +1,32 @@
 package com.example.di
 
-import com.example.di.qualifier.AccountPref
-import com.example.di.qualifier.GlobalPref
-import com.example.pref.manager.PrefManager
+import android.content.Context
 import com.mvi.data.local.AccountPrefManager
 import com.mvi.data.local.GlobalPrefManager
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class PrefModule {
+object PrefModule {
 
-    @Binds
+    @Provides
     @Singleton
-    @GlobalPref
-    abstract fun providerGlobalPref(devicePref: GlobalPrefManager): PrefManager
+    fun providerGlobalPref(
+        @ApplicationContext appContext: Context
+    ): GlobalPrefManager = GlobalPrefManager(
+        appContext
+    )
 
-    @Binds
+    @Provides
     @Singleton
-    @AccountPref
-    abstract fun providerAccountPref(accountPref: AccountPrefManager): PrefManager
+    fun providerAccountPref(
+        @ApplicationContext appContext: Context
+    ): AccountPrefManager = AccountPrefManager(
+        appContext
+    )
 }
